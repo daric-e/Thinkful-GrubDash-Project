@@ -50,12 +50,12 @@ function destroy(req, res) {
 }
 
 //middlewear
-function hasNeededContent(req, res, next) {
+function hasRequiredFields(req, res, next) {
   const { data: { deliverTo, mobileNumber, status, dishes } = {} } = req.body;
-  const neededContent = [deliverTo, mobileNumber, status, dishes];
-  for (const content of neededContent) {
-    if (!req.body.date[content]) {
-      next({ status: 400, message: `A '${content}' property is needed.` });
+  const neededFields = [deliverTo, mobileNumber, status, dishes];
+  for (const field of neededFields) {
+    if (!req.body.date[field]) {
+      next({ status: 400, message: `A '${field}' property is needed.` });
     }
   }
   next();
@@ -77,19 +77,15 @@ function validateQuantity(req, res, next) {
   const { data: { dishes } = {} } = req.body;
   for (const index in dishes) {
     if (typeof dishes[index].quantity !== "number") {
-      return res
-        .status(400)
-        .json({
-          error: `Dish ${index} must have a quantity that is an integer greater than 0`,
-        });
+      return res.status(400).json({
+        error: `Dish ${index} must have a quantity that is an integer greater than 0`,
+      });
     }
   }
   if (dishes[index].quantity < 1) {
-    return res
-      .status(400)
-      .json({
-        error: `Dish ${index} must have a quantity that is an integer greater than 0`,
-      });
+    return res.status(400).json({
+      error: `Dish ${index} must have a quantity that is an integer greater than 0`,
+    });
   }
   next();
 }
