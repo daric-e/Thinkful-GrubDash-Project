@@ -41,12 +41,12 @@ function update(req, res) {
 }
 
 //middlewear
-function hasNeededContent(req, res, next) {
+function hasRequiredFields(req, res, next) {
   const { data: { name, description, price, image_url } = {} } = req.body;
-  const neededContent = [name, description, price, image_url];
-  for (const content of neededContent) {
-    if (!req.body.date[content]) {
-      next({ status: 400, message: `A '${content}' property is needed.` });
+  const neededFields = [name, description, price, image_url];
+  for (const field of neededFields) {
+    if (!req.body.date[field]) {
+      next({ status: 400, message: `A '${field}' property is needed.` });
     }
   }
   next();
@@ -79,6 +79,7 @@ function dishExists(req, res, next) {
     message: `dish id not found: ${req.params.dishId}`,
   });
 }
+
 //middleware
 function validateId(req, res, next) {
   const dishId = req.params.dishId;
