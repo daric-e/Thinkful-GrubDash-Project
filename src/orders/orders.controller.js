@@ -23,3 +23,19 @@ function create(req, res) {
     dishes.push(newOrder);
     res.status(201).json({ data: newOrder });
 }
+
+function read(req, res) {
+    res.json({ data: res.locals.orders });
+}
+
+function update(req, res) {
+    const { data: { deliverTo, mobileNumber, status, dishes } = {} } = req.body;
+    const updateOrders = {
+        ...res.locals.orders,
+        deliverTo,
+        mobileNumber,
+        status,
+        dishes: [...dishes]
+    };
+    res.json({ updateOrders });
+}
