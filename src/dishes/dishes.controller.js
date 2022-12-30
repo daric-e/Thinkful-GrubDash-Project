@@ -13,15 +13,15 @@ function list(req, res) {
 
 function create(req, res) {
   const { data: { name, description, price, image_url } = {} } = req.body;
-  const newDish = {
+  const newName = {
     id: nextId(),
     name,
     description,
     price,
     image_url,
   };
-  dishes.push(newDish);
-  res.status(201).json({ data: newDish });
+  dishes.push(newName);
+  res.status(201).json({ data: newName });
 }
 
 function read(req, res) {
@@ -43,10 +43,10 @@ function update(req, res) {
 //middlewear
 function hasRequiredFields(req, res, next) {
   const { data: { name, description, price, image_url } = {} } = req.body;
-  const neededFields = [name, description, price, image_url];
-  for (const field of neededFields) {
-    if (!req.body.date[field]) {
-      next({ status: 400, message: `A '${field}' property is needed.` });
+  const requiredFields = ['name', 'description', 'price', 'image_url'];
+  for (const field of requiredFields) {
+    if (!req.body.data[field]) {
+      next({ status: 400, message: `A '${field}' property is required.` });
     }
   }
   next();
