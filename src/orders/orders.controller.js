@@ -48,3 +48,26 @@ function destroy(req, res) {
     }
     res.sendStatus(204);
 }
+
+//middlewear
+function hasNeededContent(req, res, next) {
+    const { data: { deliverTo, mobileNumber, status, dishes  } = {} } = req.body;
+    const neededContent = [deliverTo, mobileNumber, status, dishes ];
+    for (const content of neededContent) {
+        if (!req.body.date[content]) {
+        next({ status: 400, message: `A '${content}' property is needed.` });
+        }
+    }
+    next();
+}
+//middlewear
+function validateDishes(req, res, next) {
+        const { data: { dishes } = {} } = req.body;
+        if (!Array.isArray(dishes)) {
+            return res.status(400).json({ error: 'dishes must be an array' });
+        }
+        if (dishes.length < 1) {
+            return res.status(400).json({ error: 'dishes must be greater than one' })
+        }
+        next();
+    }
