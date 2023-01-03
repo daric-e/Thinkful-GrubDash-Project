@@ -37,7 +37,7 @@ function update(req, res) {
     price,
     image_url,
   };
-  res.json({ updateDish });
+  res.json({ data: updateDish });
 }
 
 //middlewear
